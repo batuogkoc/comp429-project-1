@@ -9,8 +9,8 @@
 #SBATCH --job-name=mandelbrot-jobs
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
-#SBATCH --partition=short
-#SBATCH --time=00:30:00
+#SBATCH --partition=shorter
+#SBATCH --time=00:05:00
 #SBATCH --output=mandelbrot-jobs.out
 
 ################################################################################
@@ -21,6 +21,10 @@ echo "Setting stack size to unlimited..."
 ulimit -s unlimited
 ulimit -l unlimited
 ulimit -a
+
+echo "Loading GCC 11..."
+module load gcc/11.2.0
+
 echo
 
 echo "Running Job...!"
@@ -29,4 +33,4 @@ echo "Running compiled binary..."
 
 echo "Parallel version with 16 threads"
 export OMP_NUM_THREADS=16
-make -f ./mandelbrot/Makefile run
+make -C ./mandelbrot run
