@@ -1,0 +1,51 @@
+Setting stack size to unlimited...
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 2061892
+max locked memory       (kbytes, -l) unlimited
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 65535
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) unlimited
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 4096
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+Loading GCC 11...
+
+Running Job...!
+===============================================================================
+Running compiled binary...
+Parallel version with 16 threads
+make: Entering directory `/scratch/users/bgunduz21/comp429-project-1/mandelbrot'
+g++ -Wall -Werror -W -Wextra -DKUACC main.cpp mandelbrot.cpp -fopenmp -std=gnu++11 -o ./mandelbrot
+./mandelbrot
+Starting Test (zoom_in_test_mixed)
+	Duration for zoom_in at (469, 311): 651 ms
+	Duration for zoom_in at (560, 685): 443 ms
+	Duration for zoom_in at (924, 557): 357 ms
+	Duration for zoom_in at (787, 581): 1071 ms
+Finished test ( zoom_in_test_mixed) in: 2523 ms
+Saved result to file (zoom_in_test_mixed.ppm)
+===============================================
+Starting Test (zoom_in_test_all_white)
+	Duration for zoom_in at (0, 0): 320 ms
+	Duration for zoom_in at (0, 0): 284 ms
+	Duration for zoom_in at (0, 0): 439 ms
+	Duration for zoom_in at (0, 0): 454 ms
+Finished test ( zoom_in_test_all_white) in: 1499 ms
+Saved result to file (zoom_in_test_all_white.ppm)
+===============================================
+Starting Test (zoom_in_test_all_black)
+	Duration for zoom_in at (500, 500): 442 ms
+	Duration for zoom_in at (500, 500): 496 ms
+	Duration for zoom_in at (500, 500): 586 ms
+	Duration for zoom_in at (500, 500): 699 ms
+Finished test ( zoom_in_test_all_black) in: 2225 ms
+Saved result to file (zoom_in_test_all_black.ppm)
+===============================================
+make: Leaving directory `/scratch/users/bgunduz21/comp429-project-1/mandelbrot'

@@ -32,8 +32,6 @@ mandelbrot::mandelbrot(int width, int height, int max_iteration,
   centerX = 0;
   centerY = 0;
 
-  pixelCount = 0;
-
 #ifdef KUACC
   vertexPixels.reserve(width * height);
   for (int i = 0; i < width * height; i++)
@@ -143,14 +141,13 @@ void mandelbrot::panImg(pan_dir dir)
 void mandelbrot::loop()
 {
   finished = false;
-  pixelCount = 0;
 
+#pragma omp parallel for collapse(2) schedule(dynamic, 1000)
   for (int y = 0; y < height; y++)
   {
     for (int x = 0; x < width; x++)
     {
       calculatePixel(x, y);
-      ++pixelCount;
     }
   }
 

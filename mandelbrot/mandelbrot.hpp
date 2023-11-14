@@ -146,7 +146,6 @@ private:
 
   int max_iteration;
 
-  int pixelCount;
   std::thread th;
 
   bool finished;
