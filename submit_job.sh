@@ -8,7 +8,7 @@
 #
 #SBATCH --job-name=mandelbrot-jobs
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=16
+#SBATCH --ntasks-per-node=32
 #SBATCH --partition=shorter
 #SBATCH --time=00:05:00
 #SBATCH --output=mandelbrot-jobs.out
@@ -31,6 +31,6 @@ echo "Running Job...!"
 echo "==============================================================================="
 echo "Running compiled binary..."
 
-echo "Parallel version with 16 threads"
-export OMP_NUM_THREADS=16
+echo "Parallel version with 32 threads"
+export OMP_NUM_THREADS=32
 make -C ./mandelbrot run

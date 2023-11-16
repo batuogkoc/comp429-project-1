@@ -142,7 +142,7 @@ void mandelbrot::loop()
 {
   finished = false;
 
-#pragma omp parallel for collapse(2) schedule(dynamic, 1000)
+#pragma omp parallel for collapse(2) schedule(dynamic)
   for (int y = 0; y < height; y++)
   {
     for (int x = 0; x < width; x++)
