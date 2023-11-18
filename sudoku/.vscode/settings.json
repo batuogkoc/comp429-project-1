@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/scratch/users/bgunduz21/comp429-project-1/sudoku",
+            "binaryPath": "/scratch/users/bgunduz21/comp429-project-1/sudoku/sudoku_solver",
+            "binaryArgs": []
+        }
+    ]
+}
