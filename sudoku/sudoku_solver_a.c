@@ -33,22 +33,28 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 	}
 	if (row > (box_sz - 1))
 	{
+// int i, j;
+// for (i = 0; i < box_sz; i++)
+// {
+// 	for (j = 0; j < box_sz; j++)
+// 	{
+// 		if (matrix[i][j] == EMPTY)
+// 			return 0;
+// 	}
+// }
+#pragma omp critical
+		printMatrix(matrix, box_sz);
 		return 1;
 	}
 	if (matrix[row][col] != EMPTY)
 	{
-#pragma omp task
-		{
-			if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
-			{
-				printMatrix(matrix, box_sz);
-			}
-		}
-#pragma omp taskwait
+		// #pragma omp task
+		solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1);
 	}
 	else
 	{
 		int num;
+
 		for (num = 1; num <= box_sz; num++)
 		{
 			if (canBeFilled(matrix, row, col, num, box_sz, grid_sz))
@@ -56,15 +62,23 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 				matrix[row][col] = num;
 #pragma omp task
 				{
-					if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
+					int copy_grid[MAX_SIZE][MAX_SIZE];
+					for (int row = 0; row < MAX_SIZE; row++)
 					{
-						printMatrix(matrix, box_sz);
+						for (int col = 0; col < MAX_SIZE; col++)
+						{
+							copy_grid[row][col] = matrix[row][col];
+						}
 					}
+
+					// copy_grid[row][col] = num;
+					solveSudoku(row, col + 1, copy_grid, box_sz, grid_sz, depth + 1);
 				}
-#pragma omp taskwait
+
 				matrix[row][col] = EMPTY;
 			}
 		}
+		// #pragma omp taskwait
 	}
 	return 0;
 }
@@ -151,13 +165,7 @@ int main(int argc, char const *argv[])
 	{
 #pragma omp single
 		{
-#pragma omp task
-			{
-				solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
-			}
-#pragma omp taskwait
-			printf("Active threads: %d\n", omp_get_num_threads());
-			printf("Available threads: %d\n", omp_get_max_threads());
+			solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
 		}
 	}
 

@@ -7,7 +7,7 @@
 #define EMPTY 0
 
 #define MAX_SIZE 25
-#define MAX_DEPTH 10
+#define MAX_DEPTH 5
 
 int findEmptyLocation(int matrix[MAX_SIZE][MAX_SIZE], int *row, int *col, int box_size);
 

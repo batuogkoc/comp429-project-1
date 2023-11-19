@@ -7,7 +7,6 @@
 #define EMPTY 0
 
 #define MAX_SIZE 25
-#define MAX_DEPTH -1
 
 int findEmptyLocation(int matrix[MAX_SIZE][MAX_SIZE], int *row, int *col, int box_size);
 
@@ -25,8 +24,9 @@ void printMatrix(int matrix[MAX_SIZE][MAX_SIZE], int box_sz)
 	}
 }
 
-int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, int grid_sz, int depth)
+int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, int grid_sz)
 {
+
 	if (col > (box_sz - 1))
 	{
 		col = 0;
@@ -38,14 +38,10 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 	}
 	if (matrix[row][col] != EMPTY)
 	{
-#pragma omp task
+		if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz))
 		{
-			if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
-			{
-				printMatrix(matrix, box_sz);
-			}
+			printMatrix(matrix, box_sz);
 		}
-#pragma omp taskwait
 	}
 	else
 	{
@@ -55,14 +51,10 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 			if (canBeFilled(matrix, row, col, num, box_sz, grid_sz))
 			{
 				matrix[row][col] = num;
-#pragma omp task
-				{
-					if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
-					{
-						printMatrix(matrix, box_sz);
-					}
-				}
-#pragma omp taskwait
+
+				if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz))
+					printMatrix(matrix, box_sz);
+
 				matrix[row][col] = EMPTY;
 			}
 		}
@@ -148,20 +140,7 @@ int main(int argc, char const *argv[])
 	readCSV(box_sz, filename, matrix);
 
 	double time1 = omp_get_wtime();
-#pragma omp parallel
-	{
-#pragma omp single
-		{
-#pragma omp task
-			{
-				solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
-			}
-#pragma omp taskwait
-			printf("Active threads: %d\n", omp_get_num_threads());
-			printf("Available threads: %d\n", omp_get_max_threads());
-		}
-	}
-
+	solveSudoku(0, 0, matrix, box_sz, grid_sz);
 	printf("Elapsed time: %0.2lf\n", omp_get_wtime() - time1);
 	return 0;
 }

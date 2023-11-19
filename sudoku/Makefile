@@ -1,3 +1,5 @@
+all: b a serial
+
 b: sudoku_solver_b.c
 	gcc -o sudoku_solver_b sudoku_solver_b.c -fopenmp -lm
 

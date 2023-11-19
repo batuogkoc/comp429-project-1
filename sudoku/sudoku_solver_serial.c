@@ -33,15 +33,13 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 	}
 	if (row > (box_sz - 1))
 	{
+		printMatrix(matrix, box_sz);
 		return 1;
 	}
 	if (matrix[row][col] != EMPTY)
 	{
 
-		if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
-		{
-			printMatrix(matrix, box_sz);
-		}
+		solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1);
 	}
 	else
 	{
@@ -52,10 +50,7 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 			{
 				matrix[row][col] = num;
 
-				if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
-				{
-					printMatrix(matrix, box_sz);
-				}
+				solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1);
 
 				matrix[row][col] = EMPTY;
 			}
@@ -142,10 +137,13 @@ int main(int argc, char const *argv[])
 	readCSV(box_sz, filename, matrix);
 
 	double time1 = omp_get_wtime();
+
 #pragma omp parallel
 	{
-
-		solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
+#pragma omp single
+		{
+			solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
+		}
 	}
 
 	printf("Elapsed time: %0.2lf\n", omp_get_wtime() - time1);
