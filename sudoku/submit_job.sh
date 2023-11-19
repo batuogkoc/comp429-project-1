@@ -6,12 +6,12 @@
 #
 # -= Resources =-
 #
-#SBATCH --job-name=mandelbrot-jobs
+#SBATCH --job-name=sudoku-jobs
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=32
+#SBATCH --ntasks-per-node=16
 #SBATCH --partition=shorter
 #SBATCH --time=00:05:00
-#SBATCH --output=mandelbrot-jobs.out
+#SBATCH --output=sudoku-jobs.out
 #SBATCH --qos=shorter
 #SBATCH --mem-per-cpu=1G
 ################################################################################
@@ -34,4 +34,5 @@ echo "Running compiled binary..."
 
 echo "Parallel version with 16 threads"
 export OMP_NUM_THREADS=16
-make mandelbrot-kuacc run
+make
+./sudoku_solver_serial 16 grids/4x4_easy.csv
