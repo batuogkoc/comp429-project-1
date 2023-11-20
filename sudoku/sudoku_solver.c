@@ -26,6 +26,7 @@ void printMatrix(int matrix[MAX_SIZE][MAX_SIZE], int box_sz)
 
 int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, int grid_sz)
 {
+
 	if (col > (box_sz - 1))
 	{
 		col = 0;
@@ -33,36 +34,26 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 	}
 	if (row > (box_sz - 1))
 	{
-#pragma omp critical
-		printMatrix(matrix, box_sz);
 		return 1;
 	}
 	if (matrix[row][col] != EMPTY)
 	{
-		solveSudoku(row, col + 1, matrix, box_sz, grid_sz);
+		if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz))
+		{
+			printMatrix(matrix, box_sz);
+		}
 	}
 	else
 	{
 		int num;
-
 		for (num = 1; num <= box_sz; num++)
 		{
 			if (canBeFilled(matrix, row, col, num, box_sz, grid_sz))
 			{
 				matrix[row][col] = num;
 
-				int(*new_matrix)[MAX_SIZE] = malloc(sizeof(int) * MAX_SIZE * MAX_SIZE);
-				if (new_matrix == NULL)
-				{
-					printf("NO MORE HEAP SPACE");
-				}
-				memcpy(new_matrix, matrix, sizeof(int) * MAX_SIZE * MAX_SIZE);
-
-#pragma omp task
-				{
-					solveSudoku(row, col + 1, new_matrix, box_sz, grid_sz);
-					free(new_matrix);
-				}
+				if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz))
+					printMatrix(matrix, box_sz);
 
 				matrix[row][col] = EMPTY;
 			}
@@ -149,14 +140,7 @@ int main(int argc, char const *argv[])
 	readCSV(box_sz, filename, matrix);
 
 	double time1 = omp_get_wtime();
-#pragma omp parallel
-	{
-#pragma omp single
-		{
-			solveSudoku(0, 0, matrix, box_sz, grid_sz);
-		}
-	}
-
+	solveSudoku(0, 0, matrix, box_sz, grid_sz);
 	printf("Elapsed time: %0.2lf\n", omp_get_wtime() - time1);
 	return 0;
 }
