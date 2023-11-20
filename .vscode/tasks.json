@@ -13,7 +13,7 @@
 				"${fileDirname}/${fileBasenameNoExtension}",
 				"-fopenmp",
 				"-lm",
-				""
+				"-g"
 			],
 			"options": {
 				"cwd": "${fileDirname}"

@@ -24,7 +24,7 @@ void printMatrix(int matrix[MAX_SIZE][MAX_SIZE], int box_sz)
 	}
 }
 
-int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, int grid_sz, int depth)
+int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, int grid_sz)
 {
 	if (col > (box_sz - 1))
 	{
@@ -33,23 +33,13 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 	}
 	if (row > (box_sz - 1))
 	{
-// int i, j;
-// for (i = 0; i < box_sz; i++)
-// {
-// 	for (j = 0; j < box_sz; j++)
-// 	{
-// 		if (matrix[i][j] == EMPTY)
-// 			return 0;
-// 	}
-// }
 #pragma omp critical
 		printMatrix(matrix, box_sz);
 		return 1;
 	}
 	if (matrix[row][col] != EMPTY)
 	{
-		// #pragma omp task
-		solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1);
+		solveSudoku(row, col + 1, matrix, box_sz, grid_sz);
 	}
 	else
 	{
@@ -60,25 +50,23 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 			if (canBeFilled(matrix, row, col, num, box_sz, grid_sz))
 			{
 				matrix[row][col] = num;
+
+				int(*new_matrix)[MAX_SIZE] = malloc(sizeof(int) * MAX_SIZE * MAX_SIZE);
+				if (new_matrix == NULL)
+				{
+					printf("NO MORE HEAP SPACE");
+				}
+				memcpy(new_matrix, matrix, sizeof(int) * MAX_SIZE * MAX_SIZE);
+
 #pragma omp task
 				{
-					int copy_grid[MAX_SIZE][MAX_SIZE];
-					for (int row = 0; row < MAX_SIZE; row++)
-					{
-						for (int col = 0; col < MAX_SIZE; col++)
-						{
-							copy_grid[row][col] = matrix[row][col];
-						}
-					}
-
-					// copy_grid[row][col] = num;
-					solveSudoku(row, col + 1, copy_grid, box_sz, grid_sz, depth + 1);
+					solveSudoku(row, col + 1, new_matrix, box_sz, grid_sz);
+					free(new_matrix);
 				}
 
 				matrix[row][col] = EMPTY;
 			}
 		}
-		// #pragma omp taskwait
 	}
 	return 0;
 }
@@ -165,7 +153,7 @@ int main(int argc, char const *argv[])
 	{
 #pragma omp single
 		{
-			solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
+			solveSudoku(0, 0, matrix, box_sz, grid_sz);
 		}
 	}
 

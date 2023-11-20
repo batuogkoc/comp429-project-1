@@ -7,7 +7,7 @@
 #define EMPTY 0
 
 #define MAX_SIZE 25
-#define MAX_DEPTH 5
+#define MAX_DEPTH 12
 
 int findEmptyLocation(int matrix[MAX_SIZE][MAX_SIZE], int *row, int *col, int box_size);
 
@@ -34,56 +34,44 @@ int solveSudoku(int row, int col, int matrix[MAX_SIZE][MAX_SIZE], int box_sz, in
 	}
 	if (row > (box_sz - 1))
 	{
+#pragma omp critical
+		printMatrix(matrix, box_sz);
 		return 1;
 	}
 	if (matrix[row][col] != EMPTY)
 	{
-		if (depth < MAX_DEPTH)
-		{
-#pragma omp task
-			{
-				if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
-				{
-					printMatrix(matrix, box_sz);
-				}
-			}
-#pragma omp taskwait
-		}
-		else
-		{
-			if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
-			{
-				printMatrix(matrix, box_sz);
-			}
-		}
+		solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth);
 	}
 	else
 	{
 		int num;
+
 		for (num = 1; num <= box_sz; num++)
 		{
 			if (canBeFilled(matrix, row, col, num, box_sz, grid_sz))
 			{
 				matrix[row][col] = num;
-				if (depth < MAX_DEPTH)
+
+				if (depth >= MAX_DEPTH)
 				{
-#pragma omp task
-					{
-						if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
-						{
-							printMatrix(matrix, box_sz);
-						}
-					}
+					solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth);
 				}
 				else
 				{
-					if (solveSudoku(row, col + 1, matrix, box_sz, grid_sz, depth + 1))
+					int(*new_matrix)[MAX_SIZE] = malloc(sizeof(int) * MAX_SIZE * MAX_SIZE);
+					if (new_matrix == NULL)
 					{
-						printMatrix(matrix, box_sz);
+						printf("NO MORE HEAP SPACE");
+					}
+					memcpy(new_matrix, matrix, sizeof(int) * MAX_SIZE * MAX_SIZE);
+
+#pragma omp task
+					{
+						solveSudoku(row, col + 1, new_matrix, box_sz, grid_sz, depth + 1);
+						free(new_matrix);
 					}
 				}
 
-#pragma omp taskwait
 				matrix[row][col] = EMPTY;
 			}
 		}
@@ -173,13 +161,7 @@ int main(int argc, char const *argv[])
 	{
 #pragma omp single
 		{
-#pragma omp task
-			{
-				solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
-			}
-#pragma omp taskwait
-			printf("Active threads: %d\n", omp_get_num_threads());
-			printf("Available threads: %d\n", omp_get_max_threads());
+			solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
 		}
 	}
 
