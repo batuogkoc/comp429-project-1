@@ -138,13 +138,7 @@ int main(int argc, char const *argv[])
 
 	double time1 = omp_get_wtime();
 
-#pragma omp parallel
-	{
-#pragma omp single
-		{
-			solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
-		}
-	}
+	solveSudoku(0, 0, matrix, box_sz, grid_sz, 0);
 
 	printf("Elapsed time: %0.2lf\n", omp_get_wtime() - time1);
 	return 0;

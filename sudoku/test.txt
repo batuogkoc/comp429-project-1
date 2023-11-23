@@ -1,7 +1,0 @@
-out 1 8in 1
-solution matrix
-1 2 0 0 
-0 0 0 0 
-0 0 0 0 
-0 0 0 0 
-Elapsed time: 0.00

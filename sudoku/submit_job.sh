@@ -8,10 +8,10 @@
 #
 #SBATCH --job-name=sudoku-jobs
 #SBATCH --nodes=1
-#SBATCH --ntasks-per-node=16
+#SBATCH --ntasks-per-node=32
 #SBATCH --partition=shorter
-#SBATCH --time=00:05:00
-#SBATCH --output=sudoku-jobs.out
+#SBATCH --time=01:00:00
+#SBATCH --output=part-b-sudoku.out
 #SBATCH --qos=shorter
 #SBATCH --mem-per-cpu=1G
 ################################################################################
@@ -32,7 +32,56 @@ echo "Running Job...!"
 echo "==============================================================================="
 echo "Running compiled binary..."
 
-echo "Parallel version with 16 threads"
-export OMP_NUM_THREADS=16
 make
-./sudoku_solver_serial 16 grids/4x4_easy.csv
+#PART B:
+for ITER in 1 2 3
+do
+    for THREAD_COUNT in 32
+    do
+        for PROBLEM in 1 2 3 
+        do
+            EXEC="sudoku_solver_b"
+            FILENAME="perf-test-b/perf-${EXEC}-4x4_hard_${PROBLEM}-${THREAD_COUNT}-${ITER}.txt"
+            echo "Performing: ${FILENAME}"
+            "./${EXEC}" 16 "grids/4x4_hard_${PROBLEM}.csv" > ${FILENAME}
+        done
+    done
+done
+
+
+#PART A:
+# for ITER in 1 2 3
+# do
+#     FILENAME="perf-test/perf-sudoku_solver_serial-${ITER}.txt"
+#     echo "Performing: ${FILENAME}"
+#     ./sudoku_solver_serial 16 grids/4x4_hard_3.csv > ${FILENAME}
+
+#     for THREAD_COUNT in 1 2 4 8 16 32
+#     do
+#         for EXEC in "sudoku_solver_a" #"sudoku_solver_a" 
+#         do
+#             FILENAME="aaperf-test/perf-${EXEC}-${THREAD_COUNT}-${ITER}.txt"
+#             echo "Performing: ${FILENAME}"
+#             "./${EXEC}" 16 grids/4x4_hard_3.csv > ${FILENAME}
+#         done
+
+#         FILENAME="perf-test/perf-sudoku_solver_c-${THREAD_COUNT}-${ITER}.txt"
+#         echo "Performing: ${FILENAME}"
+#         ./sudoku_solver_c 16 grids/4x4_hard_3.csv > ${FILENAME}
+#     done
+
+#     FILENAME="perf-test/perf-sudoku_solver_c_serial-${ITER}.txt"
+#     echo "Performing: ${FILENAME}"
+#     ./sudoku_solver_c_serial 16 grids/4x4_hard_3.csv > ${FILENAME}
+# done
+
+
+# EXECUTABLE="./${1:-"sudoku_solver_serial"}"
+# THREAD_COUNT=${2:-32}
+# PERF_FILENAME="perf-${EXECUTABLE}-${THREAD_COUNT}-${3}.txt"
+
+# echo "Parallel version with ${THREAD_COUNT} threads"
+# export OMP_NUM_THREADS=${THREAD_COUNT}
+# # make
+# ${EXECUTABLE} 16 grids/4x4_easy.csv > ${PERF_FILENAME}
+ 
