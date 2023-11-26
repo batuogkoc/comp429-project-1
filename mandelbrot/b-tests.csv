@@ -1,0 +1,22 @@
+File,Thread Count,Schedule Type,Chunk Size,Iteration,Mixed Test Time,White Test Time,Black Test Time
+perf-mandelbrot-2-dynamic-2.txt,2,dynamic,2,12034,225,64040
+perf-mandelbrot-1-serial-3.txt,1,serial,3,23383,154,126403
+perf-mandelbrot-4-dynamic-1.txt,4,dynamic,1,6378,344,33974
+perf-mandelbrot-1-serial-2.txt,1,serial,2,23612,161,126403
+perf-mandelbrot-8-dynamic-2.txt,8,dynamic,2,3254,214,17094
+perf-mandelbrot-4-dynamic-3.txt,4,dynamic,3,6366,343,33534
+perf-mandelbrot-16-dynamic-3.txt,16,dynamic,3,1735,310,8813
+perf-mandelbrot-2-dynamic-1.txt,2,dynamic,1,12014,226,64055
+perf-mandelbrot-32-dynamic-2.txt,32,dynamic,2,1760,419,7723
+perf-mandelbrot-4-dynamic-2.txt,4,dynamic,2,6400,348,34205
+perf-mandelbrot-32-dynamic-3.txt,32,dynamic,3,1660,427,7927
+perf-mandelbrot-8-dynamic-1.txt,8,dynamic,1,3285,218,17086
+perf-mandelbrot-1-dynamic-2.txt,1,dynamic,2,24234,246,125690
+perf-mandelbrot-1-serial-1.txt,1,serial,1,30114,177,162669
+perf-mandelbrot-1-dynamic-3.txt,1,dynamic,3,23390,246,126683
+perf-mandelbrot-2-dynamic-3.txt,2,dynamic,3,12033,226,64597
+perf-mandelbrot-1-dynamic-1.txt,1,dynamic,1,24117,246,125389
+perf-mandelbrot-32-dynamic-1.txt,32,dynamic,1,1692,397,7610
+perf-mandelbrot-16-dynamic-1.txt,16,dynamic,1,1730,254,8797
+perf-mandelbrot-8-dynamic-3.txt,8,dynamic,3,3403,262,17078
+perf-mandelbrot-16-dynamic-2.txt,16,dynamic,2,1747,272,8868

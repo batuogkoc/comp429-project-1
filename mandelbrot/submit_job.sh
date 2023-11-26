@@ -10,8 +10,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=32
 #SBATCH --partition=shorter
-#SBATCH --time=00:05:00
-#SBATCH --output=part-b.out
+#SBATCH --time=00:30:00
+#SBATCH --output=part-b-ser.out
 #SBATCH --qos=shorter
 #SBATCH --mem-per-cpu=1G
 ################################################################################
@@ -38,6 +38,7 @@ export OMP_NUM_THREADS=32
 # #PART A:
 # for ITER in 1 2 3
 # do
+#     #dynamic
 #     for CHUNK in 1 10 1000
 #     do
 #         FILENAME="perf-test-a/perf-mandelbrot-32-d-${CHUNK}-${ITER}.txt"
@@ -46,20 +47,26 @@ export OMP_NUM_THREADS=32
 #         ./mandelbrot > ${FILENAME}
 #     done
 
-    
-#     FILENAME="perf-test-a/perf-mandelbrot-serial-${ITER}.txt"
+#     #static
+#     FILENAME="perf-test-a/perf-mandelbrot-32-s-1-${ITER}.txt"
 #     echo "Performing: ${FILENAME}"
-#     ./mandelbrot_serial > ${FILENAME}
+#     make SCHEDULE="schedule(static)"
+#     ./mandelbrot > ${FILENAME}
 # done
 
 #Part b
 for ITER in 1 2 3
 do
-    for THREAD_COUNT in 1 2 4 8 16 32
-    do
-        FILENAME="perf-test-b/perf-mandelbrot-${THREAD_COUNT}-d-${ITER}.txt"
-        echo "Performing: ${FILENAME}"
-        make SCHEDULE="schedule(dynamic)"
-        ./mandelbrot > ${FILENAME}
-    done
+    # for THREAD_COUNT in 1 2 4 8 16 32
+    # do
+    #     export OMP_NUM_THREADS=${THREAD_COUNT}
+    #     FILENAME="perf-test-b/perf-mandelbrot-${THREAD_COUNT}-dynamic-${ITER}.txt"
+    #     echo "Performing: ${FILENAME}"
+    #     make SCHEDULE="schedule(dynamic)"
+    #     ./mandelbrot > ${FILENAME}
+    # done
+    #serial
+    FILENAME="perf-test-b/perf-mandelbrot-1-serial-${ITER}.txt"
+    echo "Performing: ${FILENAME}"
+    ./mandelbrot_serial > ${FILENAME}
 done
