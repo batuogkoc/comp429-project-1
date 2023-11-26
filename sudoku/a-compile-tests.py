@@ -52,6 +52,6 @@ def process_directory(directory_path, output_csv_path):
 
 # Example usage
 directory_path = "./perf-test-a"
-output_csv_path = "output.csv"
+output_csv_path = "a-perf-test.csv"
 
 process_directory(directory_path, output_csv_path)
