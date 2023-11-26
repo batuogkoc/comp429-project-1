@@ -4,6 +4,10 @@
 #include <omp.h>
 #include <vector>
 
+#ifndef SCHEDULE
+#define SCHEDULE schedule(dynamic)
+#endif
+
 #ifdef KUACC
 std::vector<Point> vertexPixels;
 #endif
@@ -142,7 +146,7 @@ void mandelbrot::loop()
 {
   finished = false;
 
-#pragma omp parallel for collapse(2) schedule(dynamic)
+#pragma omp parallel for collapse(2) SCHEDULE
   for (int y = 0; y < height; y++)
   {
     for (int x = 0; x < width; x++)

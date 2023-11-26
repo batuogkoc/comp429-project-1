@@ -1,0 +1,24 @@
+Starting Test (zoom_in_test_mixed)
+	Duration for zoom_in at (469, 311): 170 ms
+	Duration for zoom_in at (560, 685): 204 ms
+	Duration for zoom_in at (924, 557): 164 ms
+	Duration for zoom_in at (787, 581): 458 ms
+Finished test ( zoom_in_test_mixed) in: 998 ms
+Saved result to file (zoom_in_test_mixed.ppm)
+===============================================
+Starting Test (zoom_in_test_all_white)
+	Duration for zoom_in at (0, 0): 80 ms
+	Duration for zoom_in at (0, 0): 81 ms
+	Duration for zoom_in at (0, 0): 81 ms
+	Duration for zoom_in at (0, 0): 80 ms
+Finished test ( zoom_in_test_all_white) in: 324 ms
+Saved result to file (zoom_in_test_all_white.ppm)
+===============================================
+Starting Test (zoom_in_test_all_black)
+	Duration for zoom_in at (500, 500): 1136 ms
+	Duration for zoom_in at (500, 500): 1155 ms
+	Duration for zoom_in at (500, 500): 1136 ms
+	Duration for zoom_in at (500, 500): 1140 ms
+Finished test ( zoom_in_test_all_black) in: 4568 ms
+Saved result to file (zoom_in_test_all_black.ppm)
+===============================================

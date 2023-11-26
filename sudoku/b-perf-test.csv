@@ -1,0 +1,10 @@
+File,Exec Value,Test File,Thread Count,Iteration,Elapsed Time
+perf-sudoku_solver_b-4x4_hard_2-32-2.txt,sudoku_solver_b,4x4_hard_2,32,2,4.1
+perf-sudoku_solver_b-4x4_hard_3-32-1.txt,sudoku_solver_b,4x4_hard_3,32,1,4.51
+perf-sudoku_solver_b-4x4_hard_1-32-1.txt,sudoku_solver_b,4x4_hard_1,32,1,2.26
+perf-sudoku_solver_b-4x4_hard_1-32-2.txt,sudoku_solver_b,4x4_hard_1,32,2,2.29
+perf-sudoku_solver_b-4x4_hard_2-32-3.txt,sudoku_solver_b,4x4_hard_2,32,3,4.16
+perf-sudoku_solver_b-4x4_hard_1-32-3.txt,sudoku_solver_b,4x4_hard_1,32,3,2.29
+perf-sudoku_solver_b-4x4_hard_2-32-1.txt,sudoku_solver_b,4x4_hard_2,32,1,4.09
+perf-sudoku_solver_b-4x4_hard_3-32-2.txt,sudoku_solver_b,4x4_hard_3,32,2,4.43
+perf-sudoku_solver_b-4x4_hard_3-32-3.txt,sudoku_solver_b,4x4_hard_3,32,3,4.45

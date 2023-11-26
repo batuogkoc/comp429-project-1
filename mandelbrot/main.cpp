@@ -35,12 +35,17 @@ std::vector<std::pair<int, int>> zoom_in_test_mixed = {
 };
 
 void zoom_in_test(mandelbrot &img, std::vector<std::pair<int, int>> test_coords,
-                  std::string test_name) {
+                  std::string test_name)
+{
+  // Make sure the img is reset before performing the zoom in test
+  img.zoomToTop();
+  img.join();
 
   std::cout << "Starting Test (" << test_name << ")" << std::endl;
 
   auto start_all = std::chrono::high_resolution_clock::now();
-  for (std::pair<int, int> coord : test_coords) {
+  for (std::pair<int, int> coord : test_coords)
+  {
     auto start = std::chrono::high_resolution_clock::now();
 
     img.zoomIn(coord.first, coord.second);
@@ -67,7 +72,8 @@ void zoom_in_test(mandelbrot &img, std::vector<std::pair<int, int>> test_coords,
   std::cout << "===============================================" << std::endl;
 }
 
-int main(int, char const **) {
+int main(int, char const **)
+{
   mandelbrot img(window_width, window_height, 5000, 15);
 
 #ifdef KUACC
@@ -80,22 +86,28 @@ int main(int, char const **) {
 
   window.setFramerateLimit(60);
 
-  while (window.isOpen()) {
+  while (window.isOpen())
+  {
     // Process events
     sf::Event event;
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) {
+    while (window.pollEvent(event))
+    {
+      if (event.type == sf::Event::Closed)
+      {
         window.close();
       }
 
       if (event.type == sf::Event::KeyPressed &&
-          event.key.code == sf::Keyboard::Escape) {
+          event.key.code == sf::Keyboard::Escape)
+      {
         window.close();
       }
 
-      if (event.type == sf::Event::KeyPressed && img.isFinished()) {
+      if (event.type == sf::Event::KeyPressed && img.isFinished())
+      {
 
-        switch (event.key.code) {
+        switch (event.key.code)
+        {
         case sf::Keyboard::Left:
           img.panImg(left);
           break;
@@ -128,7 +140,8 @@ int main(int, char const **) {
         }
       }
 
-      if (event.type == sf::Event::MouseButtonPressed && img.isFinished()) {
+      if (event.type == sf::Event::MouseButtonPressed && img.isFinished())
+      {
         sf::Vector2i mouse = sf::Mouse::getPosition(window);
         if (event.mouseButton.button == sf::Mouse::Button::Left)
           img.zoomIn(mouse.x, mouse.y);
