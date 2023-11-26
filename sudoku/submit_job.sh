@@ -58,7 +58,7 @@ do
     echo "Performing: ${FILENAME}"
     ./sudoku_solver_serial 16 grids/4x4_hard_3.csv > ${FILENAME}
 
-    for THREAD_COUNT in 32
+    for THREAD_COUNT in 1 2 4 8 16 32
     do
         for EXEC in "sudoku_solver_a" "sudoku_solver_b" 
         do

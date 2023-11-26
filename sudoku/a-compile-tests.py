@@ -51,7 +51,7 @@ def process_directory(directory_path, output_csv_path):
                 csv_writer.writerow([filename, exec_value, thread_count, iteration, elapsed_time])
 
 # Example usage
-directory_path = "./perf-test-a"
+directory_path = "./perf-test-a-old"
 output_csv_path = "a-perf-test.csv"
 
 process_directory(directory_path, output_csv_path)
